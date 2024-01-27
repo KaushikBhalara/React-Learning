@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useState } from "react";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DateChanger />
     </div>
+  );
+}
+function DateChanger() {
+  const [steps, setSteps] = useState(1);
+  const [addition, setAddition] = useState(0);
+
+  let today = new Date();
+  today.setDate(today.getDate() + addition);
+
+  function handleAddDays() {
+    setAddition((s) => s + steps);
+  }
+
+  function handleDecDays() {
+    setAddition((s) => s - steps);
+  }
+
+  return (
+    <>
+      <div>
+        <input
+          type="range"
+          value={steps}
+          onChange={(e) => setSteps(Number(e.target.value))}
+        />
+        {steps}
+      </div>
+      <div>
+        <input type="button" value={"+"} onClick={handleAddDays}></input>
+        <input
+          type="text"
+          value={addition}
+          onChange={(e) => setAddition(Number(e.target.value))}
+        />
+        <input type="button" value={"-"} onClick={handleDecDays}></input>
+      </div>
+      <div>
+        <p>
+          {addition} days from today is {today.toDateString()}
+        </p>
+      </div>
+    </>
   );
 }
 
