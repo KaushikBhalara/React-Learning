@@ -25,26 +25,36 @@ export default function App() {
 }
 
 function Accordion() {
+  const [openIndex, setOpenIndex] = useState(false);
+  function handleOnClick(index) {
+    setOpenIndex(index);
+  }
   return (
     <div className="accordion" id="accordionExample">
-      {faqs.map((item) => (
-        <AccordianItem item={item} key={item.title}></AccordianItem>
+      {faqs.map((item, index) => (
+        <AccordianItem
+          item={item}
+          currentIndex={index}
+          openIndex={openIndex}
+          onOpen={handleOnClick}
+        ></AccordianItem>
       ))}
     </div>
   );
 }
 
-function AccordianItem({ item }) {
-  const [isOpen, setIsOpen] = useState(false);
-  function handleOnClick() {
-    setIsOpen((s) => !s);
-  }
+function AccordianItem({ item, currentIndex, openIndex, onOpen }) {
   return (
-    <div className={`item ${isOpen ? "open" : ""}`} onClick={handleOnClick}>
+    <div
+      className={`item ${openIndex === currentIndex ? "open" : ""}`}
+      onClick={() => onOpen(currentIndex)}
+    >
       <p className="number">01</p>
       <p className="title">{item.title}</p>
-      <p className="icon">{isOpen ? "-" : "+"}</p>
-      {isOpen && <div className="content-box">{item.text}</div>}
+      <p className="icon">{openIndex === currentIndex ? "-" : "+"}</p>
+      {openIndex === currentIndex && (
+        <div className="content-box">{item.text}</div>
+      )}
     </div>
   );
 }
